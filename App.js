@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,71 +8,38 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import Welcome from './Components/welcome';
 import Login from './Components/login';
+import Signup from './Components/signup';
+import Home from './Components/home';
+import FirstYr from './Screens/firstYr';
+import SecondYr from './Screens/secondyr';
+import ThirdYr from './Screens/thirdYr';
+import Loading from './Components/loading';
+
+const Stack = createStackNavigator();
+
 
 const App = () => {
   return (
-    <>
-      <Welcome />
-    </>
+
+    <NavigationContainer>
+      <Stack.Navigator>
+        {/* <Stack.Screen name="Loading" component={Loading} /> */}
+        <Stack.Screen name="LOGIN" component={Login} options={{ headerTintColor: '#09b399' }} />
+        <Stack.Screen name="SIGN UP" component={Signup} options={{ headerTintColor: '#09b399' }} />
+        <Stack.Screen name="Home" component={Home} options={{ title: 'HOME', headerTintColor: '#09b399' }} />
+        <Stack.Screen name="FirstYr" component={FirstYr} options={{ title: 'First Year Learning Materials', headerTintColor: '#09b399' }} />
+        <Stack.Screen name="SecondYr" component={SecondYr} options={{ title: 'Second Year Learning Materials', headerTintColor: '#09b399' }} />
+        <Stack.Screen name="ThirdYr" component={ThirdYr} options={{ title: 'Third Year Learning Materials', headerTintColor: '#09b399' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;

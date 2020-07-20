@@ -2,57 +2,40 @@
 
 
 
-import React from 'react';
-import { View, TextInput, StyleSheet, Image, ScrollView, Button, Alert } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import React, { useState } from 'react';
+import { View, TextInput, StyleSheet, Image, ScrollView, Button, Alert, TouchableOpacity, Text } from 'react-native';
+import { firebase } from '@react-native-firebase/auth';
 
 
-function login() {
 
-    const [data, setData] = React.useState({
-        userName: '',
-        password: '',
-        secureTextEntry: true,
-        isValidUser: true,
-        isValidPassword: true,
-    });
-    const textInputChange = (val) => {
-        if (val.trim().length >= 4) {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: true,
-                isValidUser: true,
-            });
-        } else {
-            setData({
-                ...data,
-                username: val,
-                check_textInputChange: false,
-                isValidUser: false,
-            });
-        }
+function Login({ navigation }) {
+    const [userName, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+
+    const onLogin = () => {
+        Alert.alert(userName, password);
+        firebase.auth().signInWithEmailAndPassword(userName, password).then(
+            (user) => {
+                Alert.alert(user + 'signed in');
+                if (user = !null) {
+                    navigation.navigate('Home');
+                } else {
+                    Alert.alert("you're not logged in");
+                }
+            }
+        ).catch(
+            (error) => {
+                console.log(error);
+            }
+        );
     };
-    // const [initializing, setInitializing] = React.useState(true);
-    // const [user, setUser] = React.useState();
 
-    const handlePasswordChange = (val) => {
-        if (val.trim().length >= 8) {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: true,
-            });
-        } else {
-            setData({
-                ...data,
-                password: val,
-                isValidPassword: false,
-            });
-        }
-    }
-
-
+    // const signout = () => {
+    //     firebase.auth().signOut().then(
+    //         (user) => { Alert.alert(user + 'signed out'); }
+    //     );
+    // };
 
     return (
         <ScrollView>
@@ -60,11 +43,13 @@ function login() {
                 <Image source={require('../Assets/LOGO.png')} />
             </View>
             <View style={styles.textContainer}>
-                <TextInput style={styles.userName} placeholder="User Name" />
-                <TextInput style={styles.password} placeholder="Password" />
+                <TextInput style={styles.userName} placeholder="User Name" autoCapitalize="none" autoCorrect={false} value={userName} onChangeText={text => setUsername(text)} />
+                <TextInput style={styles.password} placeholder="Password" autoCapitalize="none" autoCorrect={false} value={password} onChangeText={text => setPassword(text)} />
             </View>
-            <View style={styles.log}><Button title="Login" onPress={() => Alert.alert('Login button pressed')} /></View>
-            <View style={styles.log}><Button title="SignUp" onPress={() => Alert.alert('signup button pressed')} /></View>
+            <View style={styles.log}><Button title="Login" onPress={() => onLogin()} /></View>
+            <TouchableOpacity style={styles.signupword} onPress={() => navigation.navigate('SIGN UP')} pressMagnification={2.0} >
+                <Text>New Here?Sign Up instead</Text>
+            </TouchableOpacity>
 
         </ScrollView>
 
@@ -109,7 +94,13 @@ const styles = StyleSheet.create({
         paddingRight: 40,
 
     },
+    signupword: {
+        paddingTop: 10,
+        paddingLeft: '28%',
+        color: '#0448bd',
+        fontSize: 16,
+    }
 });
 
-export default login;
+export default Login;
 
