@@ -11,40 +11,47 @@ import { firebase } from '@react-native-firebase/auth';
 function Login({ navigation }) {
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
 
     const onLogin = () => {
-        Alert.alert(userName, password);
-        firebase.auth().signInWithEmailAndPassword(userName, password).then(
-            (user) => {
-                Alert.alert(user + 'signed in');
-                if (user = !null) {
-                    navigation.navigate('Home');
-                } else {
-                    Alert.alert("you're not logged in");
+        if (userName.length <= 0) {
+            setErrorMsg('Enter  your email');
+        } else if (password.length <= 0) {
+            setErrorMsg("Password field can't be empty");
+        } else {
+            firebase.auth().signInWithEmailAndPassword(userName, password).then(
+                (user) => {
+                    if (user != null) {
+                        navigation.navigate('Home', { screen: 'Home' });
+                    } else {
+                        Alert.alert("you're not logged in");
+                    }
                 }
-            }
-        ).catch(
-            (error) => {
-                console.log(error);
-            }
-        );
-    };
+            ).catch(
+                error => {
+                    if (error.code === 'auth/invalid-email') {
+                        setErrorMsg('That email address is invalid!');
+                    } else if (error.code === 'auth/user-not-found') {
+                        setErrorMsg('You are not registered. Signup now!');
+                    } else if (error.code === 'auth/wrong-password') {
+                        setErrorMsg('Invaid password');
+                    }
+                }
+            );
+        }
 
-    // const signout = () => {
-    //     firebase.auth().signOut().then(
-    //         (user) => { Alert.alert(user + 'signed out'); }
-    //     );
-    // };
+    };
 
     return (
         <ScrollView>
             <View style={styles.Logo}>
-                <Image source={require('../Assets/LOGO.png')} />
+                <Image source={require('../../Assets/LOGO.png')} />
             </View>
             <View style={styles.textContainer}>
                 <TextInput style={styles.userName} placeholder="User Name" autoCapitalize="none" autoCorrect={false} value={userName} onChangeText={text => setUsername(text)} />
-                <TextInput style={styles.password} placeholder="Password" autoCapitalize="none" autoCorrect={false} value={password} onChangeText={text => setPassword(text)} />
+                <TextInput style={styles.password} placeholder="Password" autoCapitalize="none" autoCorrect={false} secureTextEntry={true} value={password} onChangeText={text => setPassword(text)} />
+                <Text style={styles.errorMsg}>{errorMsg}</Text>
             </View>
             <View style={styles.log}><Button title="Login" onPress={() => onLogin()} /></View>
             <TouchableOpacity style={styles.signupword} onPress={() => navigation.navigate('SIGN UP')} pressMagnification={2.0} >
@@ -99,6 +106,9 @@ const styles = StyleSheet.create({
         paddingLeft: '28%',
         color: '#0448bd',
         fontSize: 16,
+    },
+    errorMsg: {
+        color: 'red',
     }
 });
 

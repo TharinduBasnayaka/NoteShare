@@ -17,7 +17,7 @@ export default function home({ navigation }) {
         <ScrollView >
             <View style={styles.container}>
                 <View style={styles.Logo}>
-                    <Image source={require('../Assets/LOGO.png')} />
+                    <Image source={require('../../Assets/LOGO.png')} />
                 </View>
             </View>
             <View style={styles.bottomContainer}>
@@ -35,12 +35,7 @@ export default function home({ navigation }) {
                 </LinearGradient>
 
             </View>
-            <View>
-                <Btab.Navigator>
-                    <Btab.Screen name="Profile" component={Profile} />
-                    <Btab.Screen name="Home" component={home} />
-                </Btab.Navigator>
-            </View>
+
 
         </ScrollView >
     );
@@ -50,10 +45,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
 
+
     },
     bottomContainer: {
-
-
         justifyContent: 'center',
         alignItems: 'center',
 
@@ -97,6 +91,8 @@ const styles = StyleSheet.create({
         color: '#000000',
         backgroundColor: 'transparent',
     },
-
+    footter: {
+        marginTop: '15%',
+    }
 
 });
