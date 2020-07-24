@@ -1,0 +1,32 @@
+/* eslint-disable prettier/prettier */
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import auth from '@react-native-firebase/auth';
+
+
+
+function Loading() {
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+    function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) { setInitializing(false); }
+    }
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    if (initializing) return null;
+    if (!user) {
+        return (user);
+
+    }
+
+    return (
+        null
+
+    );
+}
+
+export default Loading;
