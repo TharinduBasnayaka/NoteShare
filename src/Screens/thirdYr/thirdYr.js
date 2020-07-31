@@ -1,45 +1,34 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from '../Screens/profile';
 
-
-
-
-
-const Btab = createBottomTabNavigator();
-
-export default function home({ navigation }) {
-
+function ThirdYr({ navigation }) {
     return (
         <ScrollView >
             <View style={styles.container}>
                 <View style={styles.Logo}>
-                    <Image source={require('../../Assets/LOGO.png')} />
+                    <Image source={require('../../../Assets/LOGO.png')} />
                 </View>
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={styles.buttonText1}> Select Your Academic Year</Text>
+                <Text style={styles.buttonText1}> Select Your Materials</Text>
 
                 <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => navigation.navigate('FirstYr')}><Text style={styles.buttonText}>1st Year</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Tnotes')}><Text style={styles.buttonText}>Notes</Text></TouchableOpacity>
                 </LinearGradient>
                 <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => navigation.navigate('SecondYr')}><Text style={styles.buttonText}>2nd Year</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Tpp')}><Text style={styles.buttonText}>Past Papers</Text></TouchableOpacity>
                 </LinearGradient>
 
                 <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ThirdYr')}><Text style={styles.buttonText}>3rd Year</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Tqa')}><Text style={styles.buttonText}>Q & A's</Text></TouchableOpacity>
                 </LinearGradient>
-
             </View>
-
-
-        </ScrollView >
+        </ScrollView>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
@@ -96,3 +85,5 @@ const styles = StyleSheet.create({
     }
 
 });
+
+export default ThirdYr;
