@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { View, TextInput, ScrollView, StyleSheet, Image, Button, Alert, Text, ToastAndroid } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 
 
 function Signup({ navigation }) {
@@ -40,8 +41,11 @@ function Signup({ navigation }) {
         } else {
 
             auth().createUserWithEmailAndPassword(userName, password).then(res => {
-                firestore().collection('Users').doc(res.user.uid).set({ uid: res.user.uid }).then(
-                    navigation.pop()
+                res.user.updateProfile({ displayName: name.toString() });
+                firestore().collection('Users').doc(res.user.uid).set({ uid: res.user.uid, Name: name }).then(() => {
+                    Alert.alert(userName + 'signed up successfully');
+                    navigation.navigate('Home');
+                }
                 );
             }).catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
@@ -57,6 +61,32 @@ function Signup({ navigation }) {
 
 
     };
+    async function onGoogleButtonPress() {
+
+        // Get the users ID token
+        const { idToken } = await GoogleSignin.signIn();
+
+        // Create a Google credential with the token
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+        // Sign-in the user with the credential
+        // return (
+        //     auth().signInWithCredential(googleCredential),
+        //     navigation.navigate('Home'));
+        auth().signInWithCredential(googleCredential)
+            .then(() => {
+                try {
+                    navigation.navigate('Home');
+                } catch (err) {
+                    console.log(err);
+                }
+
+            }).catch(error => console.log(error));
+
+
+
+
+
+    }
 
     return (
         <ScrollView >
@@ -65,18 +95,18 @@ function Signup({ navigation }) {
                     <Image source={require('../../Assets/LOGO.png')} />
                 </View>
             </View>
-            <Toast style={{ backgroundColor: '#888888' }} visible={visible} message="We recommend you to use Google mail to sign Up" />
+            <Toast style={{ backgroundColor: '#888888' }} visible={false} message="We recommend you to use Google mail to sign Up" />
             <View style={styles.textContainer}>
                 <View style={{ alignItems: 'center' }}>
-                    <TextInput style={styles.userName} placeholder="Your Name" onChangeText={() => setVisible(false)} />
-                    <TextInput style={styles.userName} placeholder="User Name" />
-                    <TextInput style={styles.password} placeholder="Password" secureTextEntry={true} />
-                    <TextInput style={styles.Repassword} placeholder="Re enter Password" secureTextEntry={true} />
+                    <TextInput style={styles.userName} placeholder="Your Name" val={name} onChangeText={(val) => setName(val)} />
+                    <TextInput style={styles.userName} placeholder="User Name" val={userName} onChangeText={(val) => setUserName(val)} />
+                    <TextInput style={styles.password} placeholder="Password" secureTextEntry={true} value={password} onChangeText={(val) => setPassword(val)} />
+                    <TextInput style={styles.Repassword} placeholder="Re enter Password" secureTextEntry={true} onChangeText={(val) => setRetypePass(val)} />
                 </View>
 
             </View>
-            <View style={styles.log}><Button title="SignUp" onPress={() => Alert.alert('signup button pressed')} /></View>
-            <View style={styles.log}><Button title="SignUp using google account" onPress={() => Alert.alert('signup using google button pressed')} /></View>
+            <View style={styles.log}><Button title="SignUp" onPress={() => onSignUp()} /></View>
+            <View style={styles.log1}><GoogleSigninButton onPress={() => onGoogleButtonPress()} /></View>
         </ScrollView>
     );
 }
@@ -130,6 +160,11 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingLeft: 40,
         paddingRight: 40,
+
+    },
+    log1: {
+        paddingTop: 10,
+        marginLeft: '20%',
 
     },
 
