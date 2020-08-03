@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { Text, View, Button, Alert, StyleSheet, ScrollView, FlatList, ActivityIndicator, SafeAreaView } from 'react-native';
+import { Text, View, Button, Alert, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, Image } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import { Item, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 
 export default class FirstNotes extends Component {
@@ -58,7 +58,7 @@ export default class FirstNotes extends Component {
                 setTimeout(() => {
                     const task = storage().ref(`firstSubjectdoc/${res.name}`).putFile(res.uri);
                     task.on('state_changed', taskSnapshot => {
-                        console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
+                        Alert.alert(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
                     });
 
                     task.then(async () => {
@@ -70,6 +70,7 @@ export default class FirstNotes extends Component {
                             .set({ downURL: downURl, name: res.name })
                             .then(() =>
                                 Alert.alert(res.name + ' Added'),
+                                Alert.alert('Refresh to view newly added document'),
                                 this.setState({ isLoading: true }),
                                 setTimeout(() => {
                                     this.setState({ isLoading: false });
@@ -96,12 +97,13 @@ export default class FirstNotes extends Component {
     renderItem = ({ item }) => {
         console.log(item.downURL);
         return (
-            <View>
 
-                <LinearGradient colors={['#152DDE', '#296AE3', '#09A8F3']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => item.downURL}><Text style={styles.buttonText}>{item.name}</Text></TouchableOpacity>
-                </LinearGradient>
-            </View>
+            <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }}>
+                <Image source={require('../../../Assets/pdf.png')} style={styles.imgStyle} />
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
         );
     }
     render() {
@@ -114,7 +116,7 @@ export default class FirstNotes extends Component {
         return (
             this.state.isLoading ?
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator size='large' color='#2003fc' />
+                    <ActivityIndicator size="large" color="#2003fc" />
 
                 </View>
                 :
@@ -129,9 +131,7 @@ export default class FirstNotes extends Component {
                     <View style={styles.uploadbtn}>
                         <Button title="Upload Document" onPress={() => this.Document_Upload()} />
                     </View>
-                    {/* <TouchableOpacity onPress={() => this.Document_Upload()} style={styles.uploadbtn}>
-                        <Text>Upload</Text>
-                    </TouchableOpacity> */}
+
 
                 </SafeAreaView>
         );
@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+
+
 
 
     },
@@ -153,21 +154,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#2f91fa',
         color: '#ffffff',
         marginBottom: '5%',
+        marginLeft: '10%',
 
     },
-    linearGradient: {
 
-        borderRadius: 20,
-        width: '100%',
-        marginTop: '3%',
-    },
-    buttonText: {
-        fontSize: 14,
-        fontFamily: 'Gill Sans',
-        textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
-        backgroundColor: 'transparent',
+    imgStyle: {
+        width: 70,
+        height: 70,
+        margin: 5,
     },
 
 
