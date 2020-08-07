@@ -21,6 +21,10 @@ export default function home({ navigation }) {
                 </View>
             </View>
             <View style={styles.bottomContainer}>
+                <Text style={{}} >Project By:</Text>
+                <Text style={{}} >B.M.T.P.D.Basnayaka</Text>
+                <Text style={{}} >17000106</Text>
+
                 <Text style={styles.buttonText1}> Select Your Academic Year</Text>
 
                 <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>

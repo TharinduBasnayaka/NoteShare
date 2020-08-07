@@ -22,7 +22,6 @@
     "@reduxjs/toolkit": "^1.4.0",
     "firebase": "^7.17.1",
     "react": "16.13.1",
-    "react-firebase-file-uploader": "^2.4.3",
     "react-native": "0.63.1",
     "react-native-document-picker": "^3.5.4",
     "react-native-fs": "^2.16.6",

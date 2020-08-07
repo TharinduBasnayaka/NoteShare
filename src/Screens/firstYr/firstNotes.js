@@ -1,11 +1,13 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+
 import React, { Component } from 'react';
-import { Text, View, Button, Alert, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, Image } from 'react-native';
+import { Text, View, Button, Alert, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, Image, AppRegistry, PermissionsAndroid } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import RNFS from 'react-native-fs';
 
 
 
@@ -16,8 +18,13 @@ export default class FirstNotes extends Component {
         this.state = {
             docArray: [],
             isLoading: true,
+            isDownloaded: false,
+            permissionGranted: false,
+
 
         };
+        this.docDownload = this.docDownload.bind(this);
+        this.download_permission = this.download_permission.bind(this);
     }
 
     //getting firestore data and set it to array
@@ -45,7 +52,7 @@ export default class FirstNotes extends Component {
 
     }
 
-
+    //Function for uploading documents to the storage and getting the download Url 
     Document_Upload = async () => {
 
         setTimeout(async () => {
@@ -94,11 +101,12 @@ export default class FirstNotes extends Component {
         }, 3000);
     }
 
+    //flat list item render 
     renderItem = ({ item }) => {
-        console.log(item.downURL);
+        console.log('========' + item.downURL);
         return (
 
-            <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity style={{ flex: 1, flexDirection: 'row' }} onPress={() => this.docDownload(item.downURL, item.name)}>
                 <Image source={require('../../../Assets/pdf.png')} style={styles.imgStyle} />
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Text>{item.name}</Text>
@@ -106,6 +114,57 @@ export default class FirstNotes extends Component {
             </TouchableOpacity>
         );
     }
+
+    //To get permission to the access the phone
+    download_permission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: 'File Access Permission',
+                    message: 'NoteShare want to access files to download document',
+                    buttonPositive: 'OK',
+                    buttonNegative: 'Cancel',
+                    buttonNeutral: 'Ask me later',
+                },
+
+            );
+            return granted;
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert('ERROR');
+
+        }
+
+    }
+    //Function For document download and save to the localstorage
+    docDownload = async (docUrl, name) => {
+        let Permission = this.download_permission();
+
+        if (Permission === PermissionsAndroid.RESULTS.GRANTED) {
+            this.setState({ permissionGranted: true });
+        }
+
+        RNFS.downloadFile({
+            fromUrl: docUrl,
+            toFile: `${RNFS.ExternalStorageDirectoryPath}/Download/${name}`,
+        }).promise.then((res) => {
+            this.setState({ isDownloaded: true });
+            if (this.state.isDownloaded === true) {
+
+                console.log('downloaded successfully to' + `${RNFS.ExternalStorageDirectoryPath}/${name}`);
+                Alert.alert('File downloaded successfully to' + `${RNFS.ExternalStorageDirectoryPath}/${name}`);
+            }
+        });
+    }
+
+
+
+
+
+
+
     render() {
 
 
@@ -136,7 +195,9 @@ export default class FirstNotes extends Component {
                 </SafeAreaView>
         );
     }
+
 }
+AppRegistry.registerComponent('FirstNotes', () => FirstNotes);
 const styles = StyleSheet.create({
     container: {
         flex: 1,

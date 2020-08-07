@@ -43,7 +43,7 @@ function Signup({ navigation }) {
             auth().createUserWithEmailAndPassword(userName, password).then(res => {
                 res.user.updateProfile({ displayName: name.toString() });
                 firestore().collection('Users').doc(res.user.uid).set({ uid: res.user.uid, Name: name }).then(() => {
-                    Alert.alert(userName + 'signed up successfully');
+                    Alert.alert(userName + ' ' + 'signed up successfully');
                     navigation.navigate('Home');
                 }
                 );
@@ -68,10 +68,7 @@ function Signup({ navigation }) {
 
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        // Sign-in the user with the credential
-        // return (
-        //     auth().signInWithCredential(googleCredential),
-        //     navigation.navigate('Home'));
+
         auth().signInWithCredential(googleCredential)
             .then(() => {
                 try {
