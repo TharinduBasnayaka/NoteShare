@@ -42,6 +42,7 @@ import ThirdYr from './src/Screens/thirdYr/thirdYr';
 import Tqa from './src/Screens/thirdYr/thirdQA';
 import Tnotes from './src/Screens/thirdYr/thirdNotes';
 import Tpp from './src/Screens/thirdYr/thirdPP';
+
 //--------------------------------------------------------------------
 
 
@@ -63,7 +64,7 @@ const App = () => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, [user]);
+  });
 
   if (initializing) return null;
 
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   signoutbtn: {
-    paddingRight: '0.3%',
+    marginRight: '0.3%',
   },
 }
 );
