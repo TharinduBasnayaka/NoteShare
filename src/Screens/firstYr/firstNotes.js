@@ -52,7 +52,7 @@ export default class FirstNotes extends Component {
 
     }
 
-    //Function for uploading documents to the storage and getting the download Url 
+    //Function for uploading documents to the storage and getting the download Url
     Document_Upload = async () => {
 
         setTimeout(async () => {
@@ -101,7 +101,7 @@ export default class FirstNotes extends Component {
         }, 3000);
     }
 
-    //flat list item render 
+    //flat list item render
     renderItem = ({ item }) => {
         console.log('========' + item.downURL);
         return (
@@ -180,6 +180,7 @@ export default class FirstNotes extends Component {
                 </View>
                 :
                 <SafeAreaView style={styles.container}>
+
                     <FlatList
                         data={this.state.docArray}
                         renderItem={this.renderItem}

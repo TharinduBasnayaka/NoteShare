@@ -1,5 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+
 import React, { Component } from 'react';
 import { Text, View, Button, Alert, StyleSheet, FlatList, ActivityIndicator, SafeAreaView, Image, PermissionsAndroid, AppRegistry } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';

@@ -22,9 +22,7 @@ function firstYr({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate('Fpp')}><Text style={styles.buttonText}>Past Papers</Text></TouchableOpacity>
                 </LinearGradient>
 
-                <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Fqa')}><Text style={styles.buttonText}>Q & A's</Text></TouchableOpacity>
-                </LinearGradient>
+
             </View>
         </ScrollView>
     );
