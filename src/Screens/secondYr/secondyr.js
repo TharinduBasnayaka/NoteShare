@@ -21,9 +21,7 @@ function secondyr({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate('Spp')}><Text style={styles.buttonText}>Past Papers</Text></TouchableOpacity>
                 </LinearGradient>
 
-                <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Sqa')}><Text style={styles.buttonText}>Q & A's</Text></TouchableOpacity>
-                </LinearGradient>
+
             </View>
         </ScrollView>
     );
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     },
     footter: {
         marginTop: '15%',
-    }
+    },
 
 });
 

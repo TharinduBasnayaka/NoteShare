@@ -1,17 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity, Button } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from '../Screens/profile';
 
 
+export default function Home({ navigation }) {
 
-
-
-const Btab = createBottomTabNavigator();
-
-export default function home({ navigation }) {
 
     return (
         <ScrollView >
@@ -37,6 +31,9 @@ export default function home({ navigation }) {
                 <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
                     <TouchableOpacity onPress={() => navigation.navigate('ThirdYr')}><Text style={styles.buttonText}>3rd Year</Text></TouchableOpacity>
                 </LinearGradient>
+                <View style={styles.profilebtn}>
+                    <Button title="Go to Profile" onPress={() => navigation.navigate('Profile')} />
+                </View>
 
             </View>
 
@@ -95,8 +92,12 @@ const styles = StyleSheet.create({
         color: '#000000',
         backgroundColor: 'transparent',
     },
+    profilebtn: {
+        marginTop: '2%',
+
+    },
     footter: {
         marginTop: '15%',
-    }
+    },
 
 });

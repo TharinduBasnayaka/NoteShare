@@ -23,7 +23,7 @@ function Login({ navigation }) {
             firebase.auth().signInWithEmailAndPassword(userName, password).then(
                 (user) => {
                     if (user != null) {
-                        navigation.navigate('Home', { screen: 'Home' });
+                        navigation.navigate('Home');
                     } else {
                         Alert.alert("you're not logged in");
                     }
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
     errorMsg: {
         color: 'red',
-    }
+    },
 });
 
 export default Login;
